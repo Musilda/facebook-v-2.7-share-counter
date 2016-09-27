@@ -1,0 +1,20 @@
+
+function curl_get_shares( $url ){
+	
+  $access_token = 'APP ID|APP SECRET';
+	$api_url = 'https://graph.facebook.com/v2.7/?id=' . urlencode( $url ) . '&access_token=' . $access_token;
+	
+  $fb_connect = curl_init(); // initializing
+	curl_setopt( $fb_connect, CURLOPT_URL, $api_url );
+	curl_setopt( $fb_connect, CURLOPT_RETURNTRANSFER, 1 ); // return the result, do not print
+	curl_setopt( $fb_connect, CURLOPT_TIMEOUT, 20 );
+	
+  $json_return = curl_exec( $fb_connect ); // connect and get json data
+	
+  curl_close( $fb_connect ); // close connection
+	
+  $body = json_decode( $json_return );
+	
+  return intval( $body->share->share_count );
+  
+}
